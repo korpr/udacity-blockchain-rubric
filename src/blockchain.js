@@ -251,13 +251,16 @@ class Blockchain {
                 block.height = self.height + 1;
                 block.hash = SHA256(JSON.stringify(block)).toString();
                 self.chain.push(block);
-                self.height++;
+                
                 self.validateChain()
                     .then(result => {
                         if (result.length) {
-                            console.log(`chain validtion failed. Reject lattes block`)
+                            console.log(`chain validtion failed. Reject lattes block`);
+                            //TODO: should I  pop the last block out?
+                            self.chain.pop()
                             reject(result);
                         } else {
+                            self.height++;
                             resolve(block);
                         }
                     })
