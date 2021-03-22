@@ -17,12 +17,16 @@ class BlockchainController {
         this.submitStar();
         this.getBlockByHash();
         this.getStarsByOwner();
-        this.echo();
+        this.checkChainValidity();
     }
-    echo(){
+    checkChainValidity(){
         this.app.get("/validate-chain", async (req, res) => {
             let errorList = await this.blockchain.validateChain();
-            return res.status(200).json(errorList);
+            if (errorList.length == 0){
+                return res.status(204).send();
+            }else{
+                return res.status(200).json(errorList);
+            }
         })
         
     }

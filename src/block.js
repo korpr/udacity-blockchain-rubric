@@ -36,13 +36,16 @@ class Block {
      *  Note: to access the class values inside a Promise code you need to create an auxiliary value `let self = this;`
      */
     validate() {
-        let self = { ...this };
+        ///Make a clone of the current block. It helps to prevent accidental damage of the original block,
+        //and what is more important - this is the way to minimize the problem with simultaneous access to the block
+        //And in this case we can skip restoring the original state of the block
+        let clone = { ...this }; 
         return new Promise((resolve, reject) => {
             // Save in auxiliary variable the current block hash
-            let currentHash = self.hash;
+            let currentHash = clone.hash;
             // Recalculate the hash of the Block
-            self.hash = null;
-            let recalculatedHash = SHA256(JSON.stringify(self)).toString();
+            clone.hash = null;
+            let recalculatedHash = SHA256(JSON.stringify(clone)).toString();
             console.log(recalculatedHash)
             // Comparing if the hashes changed
             if (currentHash === recalculatedHash) {
@@ -69,7 +72,7 @@ class Block {
     getBData() {
         let self = this;
         return new Promise((resolve, reject) => {
-            if (self.height) {
+            if (self.height > 0) {
                 // Getting the encoded data saved in the Block
                 // Decoding the data to retrieve the JSON representation of the object
                 // Parse the data to an object to be retrieve.
