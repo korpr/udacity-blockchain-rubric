@@ -182,7 +182,7 @@ class Blockchain {
         });
     }
 
-    _
+    
     /**
      * Extract time  in seconds from message and return it as int
      * @param {*} message string <WALLET_ADDRESS>:<DATE IN SECONDS>:starRegistry 
